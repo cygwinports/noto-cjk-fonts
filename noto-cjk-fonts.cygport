@@ -1,0 +1,72 @@
+inherit font
+
+NAME="noto-cjk-fonts"
+VERSION=1.004
+RELEASE=1
+CATEGORY="X11"
+SUMMARY="Noto unified CJK fonts"
+DESCRIPTION="Noto's goal is to provide a beautiful reading experience for
+everyone and for all languages. Currently, Noto covers all major languages of
+the world and many others, including European, African, Middle Eastern, Indic,
+South and Southeast Asian, Central Asian, American, and East Asian languages.
+Several minority and historical languages are also supported."
+HOMEPAGE="http://www.google.com/get/noto"
+SRC_URI="
+	https://github.com/googlei18n/noto-cjk/archive/v${VERSION}/noto-cjk-v${VERSION}.tar.gz
+	google-noto-fonts/66-google-noto-sans-cjk.conf
+	google-noto-fonts/66-google-noto-sans-japanese.conf
+	google-noto-fonts/66-google-noto-sans-korean.conf
+	google-noto-fonts/66-google-noto-sans-simplified-chinese.conf
+	google-noto-fonts/66-google-noto-sans-traditional-chinese.conf
+"
+SRC_DIR="noto-cjk-${VERSION}"
+
+ARCH=noarch
+
+PKG_NAMES="noto-cjk-fonts-common noto-cjk-fonts noto-japanese-fonts noto-korean-fonts
+	   noto-simplified-chinese-fonts noto-traditional-chinese-fonts"
+noto_cjk_fonts_common_CONTENTS="usr/share/doc/${NAME}/"
+noto_cjk_fonts_REQUIRES="${NAME}-common"
+noto_cjk_fonts_CONTENTS+="
+	etc/fonts/conf.d/*-cjk.conf
+	usr/share/fontconfig/conf.avail/*-cjk.conf
+	${FONTSDIR#/}/noto/*CJK-*
+"
+noto_japanese_fonts_SUMMARY="Noto Japanese fonts"
+noto_japanese_fonts_REQUIRES="${NAME}-common"
+noto_japanese_fonts_CONTENTS+="
+	etc/fonts/conf.d/*-japanese.conf
+	usr/share/fontconfig/conf.avail/*-japanese.conf
+	${FONTSDIR#/}/noto/*JP-*
+"
+noto_korean_fonts_SUMMARY="Noto Korean fonts"
+noto_korean_fonts_REQUIRES="${NAME}-common"
+noto_korean_fonts_CONTENTS+="
+	etc/fonts/conf.d/*-korean.conf
+	usr/share/fontconfig/conf.avail/*-korean.conf
+	${FONTSDIR#/}/noto/*KR-*
+"
+noto_simplified_chinese_fonts_SUMMARY="Noto Simplified Chinese fonts"
+noto_simplified_chinese_fonts_REQUIRES="${NAME}-common"
+noto_simplified_chinese_fonts_CONTENTS+="
+	etc/fonts/conf.d/*-simplified-chinese.conf
+	usr/share/fontconfig/conf.avail/*-simplified-chinese.conf
+	${FONTSDIR#/}/noto/*SC-*
+"
+noto_traditional_chinese_fonts_SUMMARY="Noto Traditional Chinese fonts"
+noto_traditional_chinese_fonts_REQUIRES="${NAME}-common"
+noto_traditional_chinese_fonts_CONTENTS+="
+	etc/fonts/conf.d/*-traditional-chinese.conf
+	usr/share/fontconfig/conf.avail/*-traditional-chinese.conf
+	${FONTSDIR#/}/noto/*TC-*
+"
+
+src_compile() { :; }
+
+src_install() {
+	cd ${S}
+	fontinto noto
+	dofont *CJK-*.ttc *{JP,KR,SC,TC}-*.otf
+	dofontconf *.conf
+	dodoc README.*
+}
